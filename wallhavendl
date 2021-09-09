@@ -63,6 +63,13 @@ def set_defaults():
     Wallhaven.api_url = construct_api_url()
 
 
+def write_image(image_url, filename):
+    """Writes data from url to image file."""
+    img_data = requests.get(image_url).content
+    with open(filename, 'wb') as handler:
+        handler.write(img_data)
+
+
 def fetch_file():
     response = requests.get(Wallhaven.api_url)
     print(response)
