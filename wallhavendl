@@ -81,6 +81,7 @@ def main():
     json = fetch_file()
 
     data = json['data']
+    print("--> Downloading:", len(data), "images.")
     for d in data:
         path = d['path']
         temp = path.replace('https://', '')
