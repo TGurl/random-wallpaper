@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+# You can read about the parameters here:
+# https://wallhaven.cc/help/api#search
+
 import os
 import sys
 from dataclasses import dataclass
