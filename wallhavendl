@@ -72,12 +72,14 @@ def write_image(image_url, filename):
 
 def fetch_file():
     response = requests.get(Wallhaven.api_url)
-    print(response)
+    image_data = data = json.loads(response.text)
+    return image_data
 
 
 def main():
     set_defaults()
-    fetch_file()
+    data = fetch_file()
+    type(data)
 
 
 if __name__ == "__main__":
