@@ -15,7 +15,8 @@ class Config:
 
 
 def set_defaults():
-    Config.wallh_api_key = ''
+    # remember to remove api key!!!!!!
+    Config.wallh_api_key = 'F3HZhKeYKmuRZqqLqBySt8NUTf0GxGr1'
     Config.wallh_api_url = ''
     Config.wallh_categories = 110
     Config.wallh_purity = 110
