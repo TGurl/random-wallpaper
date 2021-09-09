@@ -8,6 +8,8 @@ import sys
 from dataclasses import dataclass
 import subprocess
 import re
+import requests
+import json
 
 
 @dataclass
@@ -62,9 +64,8 @@ def set_defaults():
 
 
 def fetch_file():
-    command = "curl -L " + Wallhaven.api_url + " | jq -r"
-    # os.system(command)
-    print(command)
+    response = requests.get(Wallhaven.api_url)
+    print(response)
 
 
 def main():
