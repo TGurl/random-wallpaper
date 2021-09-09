@@ -6,28 +6,70 @@
 import os
 import sys
 from dataclasses import dataclass
+import subprocess
+import re
 
 
 @dataclass
-class Config:
-    wallh_api_key: str
-    wallh_api_url: str
-    wallh_categories: int
-    wallh_purity: int
-    wallh_colors: str
+class Wallhaven:
+    api_key: str
+    api_url: str
+    categories: int
+    purity: int
+    colors: str
+    query: str
+    sorting: str
+    resolutions: str
+
+
+def getScreenDimensions():
+    xrandrOutput = str(subprocess.Popen(
+        ['xrandr'], stdout=subprocess.PIPE).communicate()[0])
+    matchObj = re.findall(r'current\s(\d+) x (\d+)', xrandrOutput)
+    if matchObj:
+        screenwidth = str(int(matchObj[0][0]))
+        screenheight = str(int(matchObj[0][1]))
+    return screenwidth + "x" + screenheight
+
+
+def construct_api_url():
+    apiurl = "https://wallhaven.cc/api/v1/search?" \
+        + "api_key=" + Wallhaven.api_key + "&" \
+        + "q=" + Wallhaven.query + "&" \
+        + "categories=" + str(Wallhaven.categories) + "&" \
+        + "purity=" + str(Wallhaven.purity) + "&" \
+        + "colors=" + Wallhaven.colors + "&" \
+        + "sorting=" + Wallhaven.sorting + "&" \
+        + "resolutions=" + Wallhaven.resolutions
+    return apiurl
 
 
 def set_defaults():
     # remember to remove api key!!!!!!
-    Config.wallh_api_key = 'F3HZhKeYKmuRZqqLqBySt8NUTf0GxGr1'
-    Config.wallh_api_url = ''
-    Config.wallh_categories = 110
-    Config.wallh_purity = 110
-    Config.wallh_colors = ''
+    Wallhaven.query = 'boobs'
+    Wallhaven.api_key = 'F3HZhKeYKmuRZqqLqBySt8NUTf0GxGr1'
+    Wallhaven.categories = 110
+    Wallhaven.purity = 110
+    Wallhaven.colors = ''
+    Wallhaven.sorting = 'random'
+
+    # get the current screen resolution
+    Wallhaven.resolutions = getScreenDimensions()
+
+    # Construction API url needs to be last
+    # as it is dependend on the above.
+    Wallhaven.api_url = construct_api_url()
+
+
+def fetch_file():
+    command = "curl -L " + Wallhaven.api_url + " | jq -r"
+    # os.system(command)
+    print(command)
 
 
 def main():
     set_defaults()
+    fetch_file()
 
 
 if __name__ == "__main__":
